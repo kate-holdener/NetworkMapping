@@ -23,8 +23,6 @@ public:
 
    virtual ~NetworkMapping();
 
-   void generate();
-
    /*
     * Calculates and returns the number of nodes whose weight constraints
     * are satisfied under this mapping
@@ -32,11 +30,25 @@ public:
    int valid_nodes();
 
    /*
+    * Calculates and returns the ratio of number of nodes whose weight 
+    * constraints are satisfied under this mapping to the total number
+    * of nodes
+    */
+   inline double valid_nodes_ratio() { return (double)valid_nodes()/m_from->size(); }
+
+   /*
     * Calculates and returns the number of links whose weight constraints
     * are satisfied under this mapping
     */
    int valid_links();
 
+   /*
+    * Calculates and returns the ratio of the number of links whose weight
+    * constraints are satisfied under this mapping to the total number of links
+    */
+   inline double valid_links_ratio() { return (double)valid_links()/m_num_links; }
+ 
+   int     *m_mapping;       // an array of size m_from->size()
 private:
 
    void reset_node_capacity();
@@ -48,7 +60,6 @@ private:
    Network  m_link_capacity; // a copy of m_to, modified to reflect the risidual
                              // capacity of m_to under this mapping
    int     *m_node_capacity; // an array of size m_to->size()
-   int     *m_mapping;       // an array of size m_from->size()
 
 
    Link    *m_sorted_links;  // link indices of the m_from network, sorted in descending order

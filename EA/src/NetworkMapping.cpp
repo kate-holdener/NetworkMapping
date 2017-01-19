@@ -51,10 +51,13 @@ NetworkMapping::NetworkMapping(Network *from, Network *to):
 
 NetworkMapping::~NetworkMapping()
 {
-   free(m_mapping);
-   free(m_node_capacity);  
-   m_mapping = NULL;
+   free(m_node_capacity);
    m_node_capacity = NULL;
+   free(m_sorted_links);
+   m_sorted_links = NULL;
+   m_num_links = 0;
+   free(m_mapping);
+   m_mapping = NULL;
 }
 
 void NetworkMapping::reset_node_capacity()

@@ -85,7 +85,7 @@ bool Network::path_exists(int node1, int node2, int weight)
    memset(node_selected, 0, sizeof(bool) * m_size);
    node_selected[node1] = true;
 
-#ifdef _DEBUG
+#ifdef MY_DEBUG
    printf("Processing adjacency list for node %d\n", node1);
 #endif
 
@@ -100,7 +100,7 @@ bool Network::path_exists(int node1, int node2, int weight)
          }
          node_list.push(i);
          node_selected[i] = true;
-#ifdef _DEBUG
+#ifdef MY_DEBUG
          printf("Added node %d \n", i);
 #endif
       }
@@ -109,7 +109,7 @@ bool Network::path_exists(int node1, int node2, int weight)
    while (!node_list.empty())
    {
       int node = node_list.front();
-#ifdef _DEBUG
+#ifdef MY_DEBUG
       printf("Processing adjacency list for node %d\n", node);
 #endif
 
@@ -124,7 +124,7 @@ bool Network::path_exists(int node1, int node2, int weight)
             }
             node_list.push(i);
             node_selected[i] = true;
-#ifdef _DEBUG
+#ifdef MY_DEBUG
             printf("Added node %d \n", i);
 #endif
          }
@@ -149,7 +149,7 @@ bool Network::embed_path(int node1, int node2, int weight)
       node_ancestor[i] = -1;
    }
    node_ancestor[node1] = node1;
-#ifndef NDEBUG
+#ifdef MY_DEBUG
    printf("Processing adjacency list for node %d\n", node1);
 #endif
 
@@ -165,7 +165,7 @@ bool Network::embed_path(int node1, int node2, int weight)
             return true;
          }
          node_list.push(i);
-#ifndef NDEBUG
+#ifdef MY_DEBUG
          printf("Added node %d \n", i);
 #endif
       }
@@ -174,7 +174,7 @@ bool Network::embed_path(int node1, int node2, int weight)
    while (!node_list.empty())
    {
       int node = node_list.front();
-#ifndef NDEBUG
+#ifdef MY_DEBUG
       printf("Processing adjacency list for node %d\n", node);
 #endif
 
@@ -186,7 +186,7 @@ bool Network::embed_path(int node1, int node2, int weight)
             // found the path
             if (i == node2)
             {
-#ifndef NDEBUG
+#ifdef MY_DEBUG
                for (int a = 0; a < m_size; a++)
                {
                   printf("%d, ", node_ancestor[a]);
@@ -197,7 +197,7 @@ bool Network::embed_path(int node1, int node2, int weight)
                return true;
             }
             node_list.push(i);
-#ifndef NDEBUG
+#ifdef MY_DEBUG
             printf("Added node %d \n", i);
 #endif
          }
