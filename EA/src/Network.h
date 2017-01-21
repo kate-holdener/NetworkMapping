@@ -25,11 +25,12 @@ public:
    // assignment operator
    Network& operator=(Network *network);
 
-   inline int size() { return m_size; }
+   inline int size() const { return m_size; }
 
-   inline int node_weight(int node){ return m_node_weights[node]; }
+   inline int node_weight(int node) const { return m_node_weights[node]; }
 
-   inline int link_weight(int row, int column){ return m_link_weights[row][column]; }
+   inline int link_weight(int row, int column) const { return m_link_weights[row][column]; }
+
    /* 
     * Determines whether the network has a path from node1 to node2
     * such that every edge along the path is no less than the given weight
@@ -52,6 +53,17 @@ private:
     *
     */
    void reduce_capacity(int node1, int node2, int *node_ancestor, int weight);
+
+   /*  
+    * Initializes m_size based on the number of nodes defined in the input_file
+    * @param input_file [IN] input file in the format:
+    * node1 node2 edge_weight (optional)
+    * ...
+    * node1_weight
+    * node2_weight
+    * ....
+    */
+   void init_size(FILE *input_file);
 
    int **m_link_weights; // graph representation, with edge weights
    int  *m_node_weights;     // weights on graph nodes

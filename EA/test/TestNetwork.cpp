@@ -7,11 +7,11 @@ TEST(LineNetwork, PathExists)
 {
    int edges[5][5] =
    { 
-     {0, 2, 0, 0, 0},
-     {2, 0, 2, 0, 0},
-     {0, 2, 0, 2, 0},
-     {0, 0, 2, 0, 2},
-     {0, 0, 0, 2, 0}
+     {-1, 2, -1, -1, -1},
+     {2, -1, 2, -1, -1},
+     {-1, 2, -1, 2, -1},
+     {-1, -1, 2, -1, 2},
+     {-1, -1, -1, 2, -1}
    };
 
    int weights[5] = {1, 1, 1, 1, 1};
@@ -30,11 +30,11 @@ TEST(LineNetwork, PathDoesNotExist)
 {
    int edges[5][5] =
    { 
-     {0, 2, 0, 0, 0},
-     {2, 0, 2, 0, 0},
-     {0, 2, 0, 0, 0},
-     {0, 0, 0, 0, 2},
-     {0, 0, 0, 2, 0}
+     {-1, 2, -1, -1, -1},
+     {2, -1, 2, -1, -1},
+     {-1, 2, -1, -1, -1},
+     {-1, -1, -1, -1, 2},
+     {-1, -1, -1, 2, -1}
    };
 
    int weights[5] = {1, 1, 1, 1, 1};
@@ -57,11 +57,11 @@ TEST(LineNetwork, ReduceCapacity)
 {
    int edges[5][5] =
    { 
-     {0, 2, 0, 0, 0},
-     {2, 0, 2, 0, 0},
-     {0, 2, 0, 2, 0},
-     {0, 0, 2, 0, 2},
-     {0, 0, 0, 2, 0}
+     {-1, 2, -1, -1, -1},
+     {2, -1, 2, -1, -1},
+     {-1, 2, -1, 2, -1},
+     {-1, -1, 2, -1, 2},
+     {-1, -1, -1, 2, -1}
    };
 
    int weights[5] = {1, 1, 1, 1, 1};
@@ -85,7 +85,7 @@ TEST(LineNetwork, ReduceCapacity)
          }
          else
          {
-            ASSERT_EQ(network.m_link_weights[i][j], 0);
+            ASSERT_EQ(network.m_link_weights[i][j], -1);
          }
       }
    }
@@ -95,11 +95,11 @@ TEST(LineNetwork, EmbedExistingPath)
 {
    int edges[5][5] =
    { 
-     {0, 3, 0, 0, 0},
-     {3, 0, 3, 0, 0},
-     {0, 3, 0, 3, 0},
-     {0, 0, 3, 0, 3},
-     {0, 0, 0, 3, 0}
+     {-1, 3, -1, -1, -1},
+     {3, -1, 3, -1, -1},
+     {-1, 3, -1, 3, -1},
+     {-1, -1, 3, -1, 3},
+     {-1, -1, -1, 3, -1}
    };
 
    int weights[5] = {1, 1, 1, 1, 1};
@@ -124,7 +124,7 @@ TEST(LineNetwork, EmbedExistingPath)
          }
          else
          {
-            ASSERT_EQ(network.m_link_weights[i][j], 0);
+            ASSERT_EQ(network.m_link_weights[i][j], -1);
          }
       }
    }
@@ -137,11 +137,11 @@ TEST(LineNetwork, EmbedSameNodePath)
 {
    int edges[5][5] =
    { 
-     {0, 2, 0, 0, 0},
-     {2, 0, 2, 0, 0},
-     {0, 2, 0, 2, 0},
-     {0, 0, 2, 0, 2},
-     {0, 0, 0, 2, 0}
+     {-1, 2, -1, -1, -1},
+     {2, -1, 2, -1, -1},
+     {-1, 2, -1, 2, -1},
+     {-1, -1, 2, -1, 2},
+     {-1, -1, -1, 2, -1}
    };
 
    int weights[5] = {1, 1, 1, 1, 1};
@@ -165,7 +165,7 @@ TEST(LineNetwork, EmbedSameNodePath)
          }
          else
          {
-            ASSERT_EQ(network.m_link_weights[i][j], 0);
+            ASSERT_EQ(network.m_link_weights[i][j], -1);
          }
       }
    }
@@ -177,11 +177,11 @@ TEST(LineNetwork, EmbedNonExistingPath)
 {
    int edges[5][5] =
    { 
-     {0, 3, 0, 0, 0},
-     {3, 0, 3, 0, 0},
-     {0, 3, 0, 0, 0},
-     {0, 0, 0, 0, 3},
-     {0, 0, 0, 3, 0}
+     {-1, 3, -1, -1, -1},
+     {3, -1, 3, -1, -1},
+     {-1, 3, -1, -1, -1},
+     {-1, -1, -1, -1, 3},
+     {-1, -1, -1, 3, -1}
    };
 
    int weights[5] = {1, 1, 1, 1, 1};
@@ -196,43 +196,122 @@ TEST(LineNetwork, EmbedNonExistingPath)
    ASSERT_EQ(false, network.embed_path(0, 4, 2));
 
    // verify that capacity of network has not changed
-   ASSERT_EQ(0, network.m_link_weights[0][0]);
+   ASSERT_EQ(-1, network.m_link_weights[0][0]);
    ASSERT_EQ(3, network.m_link_weights[0][1]);
-   ASSERT_EQ(0, network.m_link_weights[0][2]);
-   ASSERT_EQ(0, network.m_link_weights[0][3]);
-   ASSERT_EQ(0, network.m_link_weights[0][4]);
+   ASSERT_EQ(-1, network.m_link_weights[0][2]);
+   ASSERT_EQ(-1, network.m_link_weights[0][3]);
+   ASSERT_EQ(-1, network.m_link_weights[0][4]);
 
    ASSERT_EQ(3, network.m_link_weights[1][0]);
-   ASSERT_EQ(0, network.m_link_weights[1][1]);
+   ASSERT_EQ(-1, network.m_link_weights[1][1]);
    ASSERT_EQ(3, network.m_link_weights[1][2]);
-   ASSERT_EQ(0, network.m_link_weights[1][3]);
-   ASSERT_EQ(0, network.m_link_weights[1][4]);
+   ASSERT_EQ(-1, network.m_link_weights[1][3]);
+   ASSERT_EQ(-1, network.m_link_weights[1][4]);
 
-   ASSERT_EQ(0, network.m_link_weights[2][0]);
+   ASSERT_EQ(-1, network.m_link_weights[2][0]);
    ASSERT_EQ(3, network.m_link_weights[2][1]);
-   ASSERT_EQ(0, network.m_link_weights[2][2]);
-   ASSERT_EQ(0, network.m_link_weights[2][3]);
-   ASSERT_EQ(0, network.m_link_weights[2][4]);
+   ASSERT_EQ(-1, network.m_link_weights[2][2]);
+   ASSERT_EQ(-1, network.m_link_weights[2][3]);
+   ASSERT_EQ(-1, network.m_link_weights[2][4]);
 
-   ASSERT_EQ(0, network.m_link_weights[3][0]);
-   ASSERT_EQ(0, network.m_link_weights[3][1]);
-   ASSERT_EQ(0, network.m_link_weights[3][2]);
-   ASSERT_EQ(0, network.m_link_weights[3][3]);
+   ASSERT_EQ(-1, network.m_link_weights[3][0]);
+   ASSERT_EQ(-1, network.m_link_weights[3][1]);
+   ASSERT_EQ(-1, network.m_link_weights[3][2]);
+   ASSERT_EQ(-1, network.m_link_weights[3][3]);
    ASSERT_EQ(3, network.m_link_weights[3][4]);
 
-   ASSERT_EQ(0, network.m_link_weights[4][0]);
-   ASSERT_EQ(0, network.m_link_weights[4][1]);
-   ASSERT_EQ(0, network.m_link_weights[4][2]);
+   ASSERT_EQ(-1, network.m_link_weights[4][0]);
+   ASSERT_EQ(-1, network.m_link_weights[4][1]);
+   ASSERT_EQ(-1, network.m_link_weights[4][2]);
    ASSERT_EQ(3, network.m_link_weights[4][3]);
-   ASSERT_EQ(0, network.m_link_weights[4][4]);
+   ASSERT_EQ(-1, network.m_link_weights[4][4]);
 
 }
 
+TEST(LineNetwork, PathExistsZeroWeight)
+{
+   int edges[5][5] =
+   { 
+     {-1, 0, -1, -1, -1},
+     {0, -1, 0, -1, -1},
+     {-1, 0, -1, 0, -1},
+     {-1, -1, 0, -1, 0},
+     {-1, -1, -1, 0, -1}
+   };
 
+   int weights[5] = {1, 1, 1, 1, 1};
+   int *matrix[5];
+   for (int i = 0; i < 5; i++)
+   {
+      matrix[i] = edges[i];
+   }
+ 
+   Network network((int**)matrix, weights, 5);
+   ASSERT_EQ(true, network.path_exists(0, 4, 0));
+}
+
+TEST(ConstructorFromFile, InitSize)
+{
+   FILE *input_file = fopen("test_network1.txt", "r");
+   Network network(input_file);
+   fclose(input_file);
+   ASSERT_EQ(5, network.m_size);
+}
+
+TEST(ConstructorFromFile, AdjacencyMatrix)
+{
+   FILE *input_file = fopen("test_network1.txt", "r");
+   Network network(input_file);
+   fclose(input_file);
+   //verify that the weights are correct
+   ASSERT_EQ(-1, network.m_link_weights[0][0]);
+   ASSERT_EQ(1, network.m_link_weights[0][1]);
+   ASSERT_EQ(-1, network.m_link_weights[0][2]);
+   ASSERT_EQ(-1, network.m_link_weights[0][3]);
+   ASSERT_EQ(-1, network.m_link_weights[0][4]);
+
+   ASSERT_EQ(1, network.m_link_weights[1][0]);
+   ASSERT_EQ(-1, network.m_link_weights[1][1]);
+   ASSERT_EQ(0, network.m_link_weights[1][2]);
+   ASSERT_EQ(-1, network.m_link_weights[1][3]);
+   ASSERT_EQ(-1, network.m_link_weights[1][4]);
+
+   ASSERT_EQ(-1, network.m_link_weights[2][0]);
+   ASSERT_EQ(0, network.m_link_weights[2][1]);
+   ASSERT_EQ(-1, network.m_link_weights[2][2]);
+   ASSERT_EQ(2, network.m_link_weights[2][3]);
+   ASSERT_EQ(-1, network.m_link_weights[2][4]);
+
+   ASSERT_EQ(-1, network.m_link_weights[3][0]);
+   ASSERT_EQ(-1, network.m_link_weights[3][1]);
+   ASSERT_EQ(2, network.m_link_weights[3][2]);
+   ASSERT_EQ(-1, network.m_link_weights[3][3]);
+   ASSERT_EQ(30, network.m_link_weights[3][4]);
+
+   ASSERT_EQ(-1, network.m_link_weights[4][0]);
+   ASSERT_EQ(-1, network.m_link_weights[4][1]);
+   ASSERT_EQ(-1, network.m_link_weights[4][2]);
+   ASSERT_EQ(30, network.m_link_weights[4][3]);
+   ASSERT_EQ(-1, network.m_link_weights[4][4]);
+
+}
+
+TEST(ConstructorFromFile, NodeWeights)
+{
+   FILE *input_file = fopen("test_network1.txt", "r");
+   Network network(input_file);
+   fclose(input_file);
+   ASSERT_EQ(0, network.m_node_weights[0]);
+   ASSERT_EQ(6, network.m_node_weights[1]);
+   ASSERT_EQ(5, network.m_node_weights[2]);
+   ASSERT_EQ(4, network.m_node_weights[3]);
+   ASSERT_EQ(10, network.m_node_weights[4]);
+}
 
 int main(int argc, char **argv)
 {
    testing::InitGoogleTest(&argc, argv);
    return RUN_ALL_TESTS();
 }
+
 

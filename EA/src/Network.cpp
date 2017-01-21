@@ -4,6 +4,7 @@
  */
 
 #include "Network.h"
+#include "parse.h"
 #include <queue>
 #include <stdlib.h>
 #include <string.h>
@@ -14,7 +15,92 @@ Network::Network(FILE *input_file):
   m_node_weights(NULL),
   m_size(0)
 {
-// add implementation
+   // File format is:
+   // list of links (one link per line in the format: node1 node2 link_weight)
+   // list of node weights (one node per line)
+   size_t line_size = 1024;
+   char  *line = (char*) alloca(line_size);
+   int    num_values = 0;
+   int    values[3];
+   int    node = 0;
+
+   // initialize m_size
+   init_size(input_file);
+
+   // allocate m_link_weights and m_node_weights based on the number of nodes 
+   m_link_weights = (int**)malloc(sizeof(int*) * m_size);
+   for (int i = 0; i < m_size; i++)
+   {
+      m_link_weights[i] = (int*)malloc(sizeof(int) * m_size);
+      for (int j = 0; j < m_size; j++)
+      {
+         m_link_weights[i][j] = -1;
+      }
+   }
+
+   m_node_weights = (int*)malloc(sizeof(int) * m_size);
+   memset(m_node_weights, 0, sizeof(int) * m_size);
+
+   // rewind to the start of input_file
+   rewind(input_file);
+
+   // read one line at a time to fill in m_link_weights
+   
+   while ( fgets(line, line_size, input_file) != NULL)
+   {
+      num_values = 3;
+      parse_line(line, values, &num_values);
+      // if no weight was specified, set it to 1
+      if (num_values == 2)
+      {
+         values[2] = 0;
+         num_values = 3;
+      }
+      if (num_values == 3)
+      {
+         m_link_weights[values[0]][values[1]] = values[2];
+         m_link_weights[values[1]][values[0]] = values[2];
+      }
+      // if we are here, we are now processing node weights, not edges
+      else if (num_values == 1)
+      {
+         m_node_weights[node] = values[0];
+         node++;
+      }
+      line_size = 1024;
+   }  
+
+}
+
+void Network::init_size(FILE *input_file)
+{
+   size_t line_size = 1024;
+   char  *line = (char*) alloca(line_size);
+   int    num_values = 0;
+   int    values[2];
+
+   // first pass through the file to determine the number of nodes
+   while ( fgets(line, line_size, input_file) != NULL)
+   {
+      num_values = 2;
+      parse_line(line, values, &num_values);
+      if (num_values == 2)
+      {
+         if (values[0] >= m_size)
+         {
+            m_size = values[0] + 1;
+         }
+         if (values[1] >= m_size)
+         {
+            m_size = values[1] + 1;
+         }
+      }
+      // if we are here, we are now processing node weights, not edges
+      else if (num_values == 1)
+      {
+         break;
+      }
+   }  
 }
 
 Network::Network(Network *network):
