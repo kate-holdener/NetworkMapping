@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <algorithm>
+#include <time.h>
 
 bool compare_fitness(Individual *s1, Individual *s2)
 {
@@ -19,11 +20,15 @@ EA::EA(FILE *input_file_from, FILE *input_file_to):
    m_population_size(100),
    m_mutation_rate(0),
    m_mutation_percent(0),
+   m_max_iter(0),
+   m_current_iter(0),
    m_population(NULL),
    m_offspring(NULL),
    m_pool(NULL),
    m_pool_size(0)
-{}
+{
+   srand(time(NULL));
+}
 
 EA::EA(Network *from, Network *to):
    m_from(from),
@@ -147,6 +152,8 @@ void EA::mutate()
 void EA::compete()
 {
    std::sort(m_offspring, m_offspring+m_population_size, compare_fitness);
+   std::sort(m_population, m_population+m_population_size, compare_fitness);
+
    int i;
    for (i = m_population_size-1; i >=0; i--)
    {
@@ -166,6 +173,33 @@ void EA::compete()
          m_population[i] = m_offspring[offspring_index];
          m_offspring[offspring_index] = temp;
          offspring_index++;
+      }
+   }
+}
+
+void EA::run()
+{
+   // Initialize the population
+   initialize(); 
+
+   // Evaluate the initial population
+   evaluate(m_population, m_population_size);
+
+   while (1)
+   {
+      m_current_iter++;
+
+      // Create offspring
+      crossover();
+      mutate();
+
+      // Evaluate offspring
+      evaluate(m_offspring, m_population_size); 
+
+      compete();
+      if ( terminate() )
+      {
+         break;
       }
    }
 }

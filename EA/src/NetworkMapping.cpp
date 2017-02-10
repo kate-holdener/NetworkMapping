@@ -33,7 +33,7 @@ NetworkMapping::NetworkMapping(Network *from, Network *to):
       m_mapping[i] = -1;
       for (int j = i+1; j < m_from->size(); j++)
       {
-         if (m_from->link_weight(i, j) > 0)
+         if (m_from->link_weight(i, j) >= 0)
          {
             m_sorted_links[m_num_links] = Link(i, j, m_from->link_weight(i, j));
             m_num_links++;
@@ -94,10 +94,10 @@ int NetworkMapping::valid_links()
    int link_count = 0;
    for (int i = 0; i < m_num_links; i++)
    {
-      if (m_sorted_links[i].weight > 0)
+      if (m_sorted_links[i].weight >= 0)
       {
          valid = m_link_capacity.embed_path(m_mapping[m_sorted_links[i].row], 
-            m_sorted_links[i].column, 
+            m_mapping[m_sorted_links[i].column], 
             m_sorted_links[i].weight);
          if (valid)
          {
@@ -107,4 +107,12 @@ int NetworkMapping::valid_links()
    }
    reset_link_capacity();
    return link_count;
+}
+
+void NetworkMapping::print_mapping(FILE *output_file)
+{
+   for (int i = 0; i < m_from->size(); i++)
+   {
+      fprintf(output_file, "%d -> %d\n", i, m_mapping[i]);
+   }
 }

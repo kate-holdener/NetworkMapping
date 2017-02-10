@@ -23,13 +23,19 @@ public:
 
    ~EA();
 
-   void set_population_size(int population_size){m_population_size = population_size;}
+   inline void set_population_size(int population_size){m_population_size = population_size;}
 
-   void set_mutation_rate(float mutation_rate)
+   inline void set_mutation_rate(float mutation_rate)
    {
       m_mutation_rate = mutation_rate; 
       m_mutation_percent = m_mutation_rate * 100;
    }
+
+   inline void set_max_iter(int max_iter){m_max_iter = max_iter;}
+
+   inline NetworkMapping* get_best_solution(){return &(m_population[0]->m_solution);}
+
+   inline double get_best_fitness(){return m_population[0]->m_fitness;}
 
    void run();   
 private:
@@ -59,6 +65,27 @@ private:
     */
    void compete();
 
+   /*
+    * Termination check
+    */
+   inline bool terminate()
+   {
+/*
+      if (m_current_iter < m_max_iter)
+      {
+         return false;
+      }
+*/
+      if (get_best_fitness() < 2)
+      {
+         return false;
+      }
+      
+      printf("Terminating after %d iterations\n", m_current_iter);
+      return true;
+   }
+
+
    Network m_from;   // virtual network
    Network m_to;     // physical network
 
@@ -66,6 +93,10 @@ private:
    int   m_population_size;
    float m_mutation_rate;
    int   m_mutation_percent;
+   int   m_max_iter;
+
+   // Parameters describing the state of the EA
+   int   m_current_iter;
 
    Individual **m_population;
    Individual **m_offspring;

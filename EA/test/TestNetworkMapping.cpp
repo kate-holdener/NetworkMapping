@@ -151,11 +151,11 @@ TEST(LineNetwork, ValidLinksRepeated)
 
    int to_edges[5][5] =
    { 
-     {0, 2, 0, 0, 0},
-     {2, 0, 2, 0, 0},
-     {0, 2, 0, 2, 0},
-     {0, 0, 2, 0, 2},
-     {0, 0, 0, 2, 0}
+     {0, 2, -1, -1, -1},
+     {2, 0, 2, -1, -1},
+     {-1, 2, 0, 2, -1},
+     {-1, -1, 2, 0, 2},
+     {-1, -1, -1, 2, 0}
    };
 
    int to_weights[5] = {1, 1, 1, 1, 1};
@@ -283,11 +283,11 @@ TEST(LineNetwork, InvalidLinks)
 
    int to_edges[5][5] =
    { 
-     {0, 2, 0, 0, 0},
-     {2, 0, 2, 0, 0},
-     {0, 2, 0, 2, 0},
-     {0, 0, 2, 0, 2},
-     {0, 0, 0, 2, 0}
+     {0, 2, -1, -1, -1},
+     {2, 0, 2, -1, -1},
+     {-1, 2, 0, 2, -1},
+     {-1, -1, 2, 0, 2},
+     {-1, -1, -1, 2, 0}
    };
 
    int to_weights[5] = {1, 1, 1, 1, 1};
@@ -306,8 +306,38 @@ TEST(LineNetwork, InvalidLinks)
    ASSERT_EQ(0, valid_links);
 }
 
+TEST(LineNetwork, InvalidMapping)
+{
+   int edges[5][5] =
+   { 
+     {0, 2, -1, -1, -1},
+     {2, 0, 2, -1, -1},
+     {-1, 2, 0, 2, -1},
+     {-1, -1, 2, 0, 2},
+     {-1, -1, -1, 2, 0}
+   };
 
+   int *matrix[5];
+   for (int i = 0; i < 5; i++)
+   {
+      matrix[i] = edges[i];
+   }
 
+   int nodes[] = {0,0,0,0,0};
+   Network from_network((int**)matrix, nodes, 5);
+   Network to_network((int**)matrix, nodes, 5);
+   NetworkMapping mapping(&from_network, &to_network);
+   mapping.m_mapping[0] = 1;
+   mapping.m_mapping[1] = 2;
+   mapping.m_mapping[2] = 4; 
+   mapping.m_mapping[3] = 4;
+   mapping.m_mapping[4] = 1;
+
+   int valid_links = mapping.valid_links();
+
+   ASSERT_EQ(3, valid_links);
+
+}
 int main(int argc, char **argv)
 {
    testing::InitGoogleTest(&argc, argv);

@@ -34,7 +34,7 @@ public:
     * constraints are satisfied under this mapping to the total number
     * of nodes
     */
-   inline double valid_nodes_ratio() { return (double)valid_nodes()/m_from->size(); }
+   inline double valid_nodes_ratio() { return ((double)valid_nodes())/m_from->size(); }
 
    /*
     * Calculates and returns the number of links whose weight constraints
@@ -46,7 +46,9 @@ public:
     * Calculates and returns the ratio of the number of links whose weight
     * constraints are satisfied under this mapping to the total number of links
     */
-   inline double valid_links_ratio() { return (double)valid_links()/m_num_links; }
+   inline double valid_links_ratio() { return ((double)valid_links())/m_num_links; }
+
+   void print_mapping(FILE *output_file);
  
    int     *m_mapping;       // an array of size m_from->size()
 private:
