@@ -1,0 +1,9 @@
+The following format is used for passing EA parameters
+
+initialize:<INITIALIZATION FUNCTION NAME>
+crossover:<CROSSOVER FUNCTION NAME>
+mutation:<MUTATION FUNCTION NAME>
+compete:<COMPETITION_FUNCTION NAME>
+fitness:<FITNESS EVALUATION FUNCTION NAME>
+mutation_rate:<MUTATION RATE>
+population_size:<POPULATION SIZE>
