@@ -5,7 +5,9 @@
 #ifndef EA_H
 #define EA_H
 
+#include "EAParameters.h"
 #include "Individual.h"
+#include "Population.h"
 #include <stdio.h>
 
 class EA
@@ -23,6 +25,8 @@ public:
 
    ~EA();
 
+   void set_parameters(EAParameters *parameters);
+
    inline void set_population_size(int population_size){m_population_size = population_size;}
 
    inline void set_mutation_rate(float mutation_rate)
@@ -33,37 +37,37 @@ public:
 
    inline void set_max_iter(int max_iter){m_max_iter = max_iter;}
 
-   inline NetworkMapping* get_best_solution(){return &(m_population[0]->m_solution);}
+   inline Individual* get_best_solution(){return m_population.get_best_solution();}
 
-   inline double get_best_fitness(){return m_population[0]->m_fitness;}
+   inline double get_best_fitness(){return (get_best_solution())->m_fitness;}
 
    void run();   
 private:
  
+   // function pointers to EA operators 
+/*
+   void (*_crossover)(Population *population);
+   void (*_evaluate)(Individual **individuals, int num_individuals);
+   void (*_mutate)(Individual *individual);
+   void (*_compete)(Population *population);
+   void (*_initialize_individual)(Individual *individual);
+*/
+   selection_f _selection;
+   crossover_f _crossover;
+   evaluate_f  _evaluate;
+   mutate_f    _mutate;
+   compete_f   _compete;
+   initialize_individual_f _initialize_individual;
+
    /*
-    * Allocate and initialize the population at random
+    * Initializes the population
     */
    void initialize();
-
-   /*
-    * Evaluates the fitness of the given array of individuals 
-    */ 
-   void evaluate(Individual **individuals, int num_individuals);
-
-   /*
-    * Performs crossover on m_population to generate m_offspring
-    */
-   void crossover();
 
    /*
     * Perform mutation on the offspring
     */ 
    void mutate();
-
-   /*
-    * Perform competition among m_population and m_offspring
-    */
-   void compete();
 
    /*
     * Termination check
@@ -98,11 +102,7 @@ private:
    // Parameters describing the state of the EA
    int   m_current_iter;
 
-   Individual **m_population;
-   Individual **m_offspring;
-
-   Individual *m_pool;
-   int         m_pool_size;
+   Population m_population;
 };
 #endif
 

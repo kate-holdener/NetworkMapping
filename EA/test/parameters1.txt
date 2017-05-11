@@ -1,0 +1,7 @@
+ initialize :initialize_random
+crossover  :crossover_random
+mutation   : mutate_random
+   compete:fittest_survive
+fitness :nodes_and_links_ratio
+population_size: 1234
+ mutation_rate: 0.95

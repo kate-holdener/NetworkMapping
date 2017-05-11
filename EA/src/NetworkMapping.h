@@ -48,6 +48,9 @@ public:
     */
    inline double valid_links_ratio() { return ((double)valid_links())/m_num_links; }
 
+   inline int get_from_size(){return m_from->size();}
+   inline int get_to_size(){return m_to->size();}
+
    void print_mapping(FILE *output_file);
  
    int     *m_mapping;       // an array of size m_from->size()

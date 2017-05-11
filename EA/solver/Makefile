@@ -6,7 +6,7 @@ CPP=g++
 
 CFLAGS=-I/$(SRC_DIR) -g
 
-LDFLAGS=-lpthread
+LDFLAGS=-lpthread -ldl -rdynamic
 
 SOURCES=$(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS=$(patsubst %.cpp, %.o, $(SOURCES))

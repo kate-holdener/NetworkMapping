@@ -18,7 +18,8 @@ public:
     */
    Individual(Network *from, Network *to):
       m_solution(from, to),
-      m_fitness(0)
+      m_fitness(0),
+      m_score(0)
    {}
 
    virtual ~Individual(){}
@@ -28,10 +29,10 @@ public:
       return individual;
    }
 
-
    NetworkMapping m_solution;
 
    double         m_fitness;
+   double         m_score; // used in selection
 };
 
 #endif
