@@ -21,25 +21,25 @@ Network::Network(FILE *input_file):
    size_t line_size = 1024;
    char  *line = (char*) alloca(line_size);
    int    num_values = 0;
-   int    values[3];
+   double values[3];
    int    node = 0;
 
    // initialize m_size
    init_size(input_file);
 
    // allocate m_link_weights and m_node_weights based on the number of nodes 
-   m_link_weights = (int**)malloc(sizeof(int*) * m_size);
+   m_link_weights = (double**)malloc(sizeof(double*) * m_size);
    for (int i = 0; i < m_size; i++)
    {
-      m_link_weights[i] = (int*)malloc(sizeof(int) * m_size);
+      m_link_weights[i] = (double*)malloc(sizeof(double) * m_size);
       for (int j = 0; j < m_size; j++)
       {
          m_link_weights[i][j] = -1;
       }
    }
 
-   m_node_weights = (int*)malloc(sizeof(int) * m_size);
-   memset(m_node_weights, 0, sizeof(int) * m_size);
+   m_node_weights = (double*)malloc(sizeof(double) * m_size);
+   memset(m_node_weights, 0, sizeof(double) * m_size);
 
    // rewind to the start of input_file
    rewind(input_file);
@@ -58,8 +58,8 @@ Network::Network(FILE *input_file):
       }
       if (num_values == 3)
       {
-         m_link_weights[values[0]][values[1]] = values[2];
-         m_link_weights[values[1]][values[0]] = values[2];
+         m_link_weights[(int)values[0]][(int)values[1]] = values[2];
+         m_link_weights[(int)values[1]][(int)values[0]] = values[2];
       }
       // if we are here, we are now processing node weights, not edges
       else if (num_values == 1)
@@ -77,7 +77,7 @@ void Network::init_size(FILE *input_file)
    size_t line_size = 1024;
    char  *line = (char*) alloca(line_size);
    int    num_values = 0;
-   int    values[2];
+   double    values[2];
 
    // first pass through the file to determine the number of nodes
    while ( fgets(line, line_size, input_file) != NULL)
@@ -109,16 +109,16 @@ Network::Network(Network *network):
    m_size(network->m_size)
 {
    // allocate and copy adjacency matrix
-   m_link_weights = (int**)malloc(sizeof(int*) * m_size);
+   m_link_weights = (double**)malloc(sizeof(double*) * m_size);
    for (int i = 0; i < m_size; i++)
    {
-      m_link_weights[i] = (int*)malloc(sizeof(int) * m_size);
-      memcpy(m_link_weights[i], network->m_link_weights[i], sizeof(int) * m_size);
+      m_link_weights[i] = (double*)malloc(sizeof(double) * m_size);
+      memcpy(m_link_weights[i], network->m_link_weights[i], sizeof(double) * m_size);
    }
 
    // allocate and copy node weighs
-   m_node_weights = (int*)malloc(sizeof(int) * m_size);
-   memcpy(m_node_weights, network->m_node_weights, sizeof(int) * m_size);
+   m_node_weights = (double*)malloc(sizeof(double) * m_size);
+   memcpy(m_node_weights, network->m_node_weights, sizeof(double) * m_size);
   
 }
 
@@ -127,28 +127,28 @@ Network& Network::operator=(Network *network)
    assert(m_size == network->m_size);
    for (int i = 0; i < m_size; i++)
    {
-      memcpy(m_link_weights[i], network->m_link_weights[i], sizeof(int) * m_size);
+      memcpy(m_link_weights[i], network->m_link_weights[i], sizeof(double) * m_size);
    };
    
-   memcpy(m_node_weights, network->m_node_weights, sizeof(int) * m_size);
+   memcpy(m_node_weights, network->m_node_weights, sizeof(double) * m_size);
 }
 
-Network::Network(int **matrix, int *weights, int size):
+Network::Network(double **matrix, double *weights, int size):
    m_link_weights(NULL),
    m_node_weights(NULL),
    m_size(size)
 {
    // allocate and copy adjacency matrix
-   m_link_weights = (int**)malloc(sizeof(int*) * m_size);
+   m_link_weights = (double**)malloc(sizeof(double*) * m_size);
    for (int i = 0; i < m_size; i++)
    {
-      m_link_weights[i] = (int*)malloc(sizeof(int) * m_size);
-      memcpy(m_link_weights[i], matrix[i], sizeof(int) * m_size);
+      m_link_weights[i] = (double*)malloc(sizeof(double) * m_size);
+      memcpy(m_link_weights[i], matrix[i], sizeof(double) * m_size);
    }
 
    // allocate and copy node weighs
-   m_node_weights = (int*)malloc(sizeof(int) * m_size);
-   memcpy(m_node_weights, weights, sizeof(int) * m_size);
+   m_node_weights = (double*)malloc(sizeof(double) * m_size);
+   memcpy(m_node_weights, weights, sizeof(double) * m_size);
 }
 
 Network::~Network()
@@ -164,7 +164,7 @@ Network::~Network()
    m_size = 0;
 }
 
-bool Network::path_exists(int node1, int node2, int weight)
+bool Network::path_exists(int node1, int node2, double weight)
 {
    std::queue<int> node_list;
    bool *node_selected = (bool*) alloca(sizeof(bool) * m_size);
@@ -222,7 +222,7 @@ bool Network::path_exists(int node1, int node2, int weight)
    return false;
 }
 
-bool Network::embed_path(int node1, int node2, int weight)
+bool Network::embed_path(int node1, int node2, double weight)
 {
    if (node1 == node2)
    {
@@ -296,7 +296,7 @@ bool Network::embed_path(int node1, int node2, int weight)
 
 }
 
-void Network::reduce_capacity(int node1, int node2, int *node_ancestor, int weight)
+void Network::reduce_capacity(int node1, int node2, int *node_ancestor, double weight)
 {
    int current_node = node2;
    int previous_node = node2;

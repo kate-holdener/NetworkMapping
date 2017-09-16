@@ -8,4 +8,4 @@
  * @param values [OUT] integer array containing parsed values
  * @param num_values [IN/OUT] number of integers recored into 'values' array
  */
-void parse_line(char *line, int *values, int *num_values);
+void parse_line(char *line, double *values, int *num_values);

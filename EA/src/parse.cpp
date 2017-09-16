@@ -1,22 +1,22 @@
 #include "parse.h"
 
-void parse_line(char *line, int *values, int *num_values)     
+void parse_line(char *line, double *values, int *num_values)     
 {
-   char *c;
    char *start = line;
+   char *end   = line;
    int  values_size = *num_values;
-   int  value = 0;
+   double  value = 0;
    *num_values = 0;
 
    // parse the line
-   for (c = line; *c!='\0'; c++)
+   while (*start != '\0')
    {
-      if (*c < '0' || *c > '9')
+      if (*start >= '0' && *start <= '9')
       {
-         *c = '\0';
-         if (c - start > 0)
+         value = strtod(start, &end);
+         // conversion successful
+         if (start != end)
          {
-            value = atoi(start);
             values[*num_values] = value;
             (*num_values)++;
             if (*num_values == values_size)
@@ -24,8 +24,17 @@ void parse_line(char *line, int *values, int *num_values)
                break;
             }
          }
-         start = c + 1;
+         // conversion failed
+         else
+         {
+            break;
+         }
+         start = end;
        }
-   } 
+       else
+       {
+          start++;
+       }
+   }
 }
 

@@ -5,7 +5,7 @@
 
 TEST(Parser, ThreeValues)
 {
-   int values[3];
+   double values[3];
    int num_values = 3;
    std::string line = "123   456	789\n";
    char line_char[512];
@@ -19,7 +19,7 @@ TEST(Parser, ThreeValues)
 
 TEST(Parser, TwoValues)
 {
-   int values[3];
+   double values[3];
    int num_values = 2;
    std::string line = "123   456	789\n";
    char line_char[512];
@@ -32,7 +32,7 @@ TEST(Parser, TwoValues)
 
 TEST(Parser, OneValue)
 {
-   int values[1];
+   double values[1];
    int num_values = 1;
    std::string line = "123  \n";
    char line_char[512];
@@ -44,7 +44,7 @@ TEST(Parser, OneValue)
 
 TEST(Parser, OneValueLongArray)
 {
-   int values[3];
+   double values[3];
    int num_values = 3;
    std::string line = "123\n";
    char line_char[512];
@@ -54,4 +54,25 @@ TEST(Parser, OneValueLongArray)
    ASSERT_EQ(123, values[0]);
 }
 
+TEST(Parser, OneValueFloat)
+{
+   double values[3];
+   int num_values = 3;
+   std::string line ="1.23456789\n";
+   char line_char[512];
+   strncpy(line_char, line.c_str(), 512);
+   parse_line(line_char, values, &num_values);
+   ASSERT_EQ(1, num_values);
+   ASSERT_EQ(1.23456789, values[0]);
+}
 
+TEST(Parser, Nonsense)
+{
+   double values[3];
+   int num_values = 3;
+   std::string line ="adfd .adf \n";
+   char line_char[512];
+   strncpy(line_char, line.c_str(), 512);
+   parse_line(line_char, values, &num_values);
+   ASSERT_EQ(0, num_values);
+}

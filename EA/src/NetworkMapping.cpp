@@ -44,7 +44,7 @@ NetworkMapping::NetworkMapping(Network *from, Network *to):
    std::sort(m_sorted_links, m_sorted_links + m_num_links, link_greater);
    if (m_to->size() > 0)
    {
-      m_node_capacity = (int*)malloc(sizeof(int) * m_to->size());
+      m_node_capacity = (double*)malloc(sizeof(double) * m_to->size());
    }
    reset_node_capacity();
 }

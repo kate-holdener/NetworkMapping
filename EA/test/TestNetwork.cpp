@@ -5,7 +5,7 @@
 
 TEST(LineNetwork, PathExists)
 {
-   int edges[5][5] =
+   double edges[5][5] =
    { 
      {-1, 2, -1, -1, -1},
      {2, -1, 2, -1, -1},
@@ -14,21 +14,21 @@ TEST(LineNetwork, PathExists)
      {-1, -1, -1, 2, -1}
    };
 
-   int weights[5] = {1, 1, 1, 1, 1};
-   int *matrix[5];
+   double weights[5] = {1, 1, 1, 1, 1};
+   double *matrix[5];
    for (int i = 0; i < 5; i++)
    {
       matrix[i] = edges[i];
    }
  
-   Network network((int**)matrix, weights, 5);
+   Network network((double**)matrix, weights, 5);
    ASSERT_EQ(true, network.path_exists(0, 4, 2));
 }
 
 
 TEST(LineNetwork, PathDoesNotExist)
 {
-   int edges[5][5] =
+   double edges[5][5] =
    { 
      {-1, 2, -1, -1, -1},
      {2, -1, 2, -1, -1},
@@ -37,14 +37,14 @@ TEST(LineNetwork, PathDoesNotExist)
      {-1, -1, -1, 2, -1}
    };
 
-   int weights[5] = {1, 1, 1, 1, 1};
-   int *matrix[5];
+   double weights[5] = {1, 1, 1, 1, 1};
+   double *matrix[5];
    for (int i = 0; i < 5; i++)
    {
       matrix[i] = edges[i];
    }
  
-   Network network((int**)matrix, weights, 5);
+   Network network((double**)matrix, weights, 5);
    ASSERT_EQ(false, network.path_exists(0, 4, 2));
 }
 
@@ -55,7 +55,7 @@ TEST(LineNetwork, PathDoesNotExist)
  */
 TEST(LineNetwork, ReduceCapacity)
 {
-   int edges[5][5] =
+   double edges[5][5] =
    { 
      {-1, 2, -1, -1, -1},
      {2, -1, 2, -1, -1},
@@ -64,14 +64,14 @@ TEST(LineNetwork, ReduceCapacity)
      {-1, -1, -1, 2, -1}
    };
 
-   int weights[5] = {1, 1, 1, 1, 1};
-   int *matrix[5];
+   double weights[5] = {1, 1, 1, 1, 1};
+   double *matrix[5];
    for (int i = 0; i < 5; i++)
    {
       matrix[i] = edges[i];
    }
 
-   Network network((int**)matrix, weights, 5);
+   Network network((double**)matrix, weights, 5);
    int node_ancestor[5] = {-1, 0, 1, 2, 3};
    network.reduce_capacity(0, 4, node_ancestor, 1);
 
@@ -93,7 +93,7 @@ TEST(LineNetwork, ReduceCapacity)
 
 TEST(LineNetwork, EmbedExistingPath)
 {
-   int edges[5][5] =
+   double edges[5][5] =
    { 
      {-1, 3, -1, -1, -1},
      {3, -1, 3, -1, -1},
@@ -102,14 +102,14 @@ TEST(LineNetwork, EmbedExistingPath)
      {-1, -1, -1, 3, -1}
    };
 
-   int weights[5] = {1, 1, 1, 1, 1};
-   int *matrix[5];
+   double weights[5] = {1, 1, 1, 1, 1};
+   double *matrix[5];
    for (int i = 0; i < 5; i++)
    {
       matrix[i] = edges[i];
    }
  
-   Network network((int**)matrix, weights, 5);
+   Network network((double**)matrix, weights, 5);
    // verify that the path can get embedded
    ASSERT_EQ(true, network.embed_path(0, 4, 2));
 
@@ -135,7 +135,7 @@ TEST(LineNetwork, EmbedExistingPath)
 // reduce network link capacity
 TEST(LineNetwork, EmbedSameNodePath)
 {
-   int edges[5][5] =
+   double edges[5][5] =
    { 
      {-1, 2, -1, -1, -1},
      {2, -1, 2, -1, -1},
@@ -144,14 +144,14 @@ TEST(LineNetwork, EmbedSameNodePath)
      {-1, -1, -1, 2, -1}
    };
 
-   int weights[5] = {1, 1, 1, 1, 1};
-   int *matrix[5];
+   double weights[5] = {1, 1, 1, 1, 1};
+   double *matrix[5];
    for (int i = 0; i < 5; i++)
    {
       matrix[i] = edges[i];
    }
  
-   Network network((int**)matrix, weights, 5);
+   Network network((double**)matrix, weights, 5);
    ASSERT_EQ(true, network.embed_path(3, 3, 2));
 
    // verify that capacity of network has not changed
@@ -175,7 +175,7 @@ TEST(LineNetwork, EmbedSameNodePath)
 
 TEST(LineNetwork, EmbedNonExistingPath)
 {
-   int edges[5][5] =
+   double edges[5][5] =
    { 
      {-1, 3, -1, -1, -1},
      {3, -1, 3, -1, -1},
@@ -184,14 +184,14 @@ TEST(LineNetwork, EmbedNonExistingPath)
      {-1, -1, -1, 3, -1}
    };
 
-   int weights[5] = {1, 1, 1, 1, 1};
-   int *matrix[5];
+   double weights[5] = {1, 1, 1, 1, 1};
+   double *matrix[5];
    for (int i = 0; i < 5; i++)
    {
       matrix[i] = edges[i];
    }
  
-   Network network((int**)matrix, weights, 5);
+   Network network((double**)matrix, weights, 5);
    // verify that the path can get embedded
    ASSERT_EQ(false, network.embed_path(0, 4, 2));
 
@@ -230,7 +230,7 @@ TEST(LineNetwork, EmbedNonExistingPath)
 
 TEST(LineNetwork, PathExistsZeroWeight)
 {
-   int edges[5][5] =
+   double edges[5][5] =
    { 
      {-1, 0, -1, -1, -1},
      {0, -1, 0, -1, -1},
@@ -239,14 +239,14 @@ TEST(LineNetwork, PathExistsZeroWeight)
      {-1, -1, -1, 0, -1}
    };
 
-   int weights[5] = {1, 1, 1, 1, 1};
-   int *matrix[5];
+   double weights[5] = {1, 1, 1, 1, 1};
+   double *matrix[5];
    for (int i = 0; i < 5; i++)
    {
       matrix[i] = edges[i];
    }
  
-   Network network((int**)matrix, weights, 5);
+   Network network((double**)matrix, weights, 5);
    ASSERT_EQ(true, network.path_exists(0, 4, 0));
 }
 

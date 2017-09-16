@@ -9,10 +9,10 @@
 
 struct Link
 {
-   Link(int r, int c, int w):row(r),column(c),weight(w){}
+   Link(int r, int c, double w):row(r),column(c),weight(w){}
    int row;
    int column;
-   int weight;
+   double weight;
 };
 
 
@@ -64,7 +64,7 @@ private:
 
    Network  m_link_capacity; // a copy of m_to, modified to reflect the risidual
                              // capacity of m_to under this mapping
-   int     *m_node_capacity; // an array of size m_to->size()
+   double  *m_node_capacity; // an array of size m_to->size()
 
 
    Link    *m_sorted_links;  // link indices of the m_from network, sorted in descending order
