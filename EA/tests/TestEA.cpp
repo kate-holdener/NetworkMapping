@@ -1,8 +1,7 @@
+#include <gtest/gtest.h>
 #define private public
-
 #include "EA.h"
 #include "Network.h"
-#include <gtest/gtest.h>
 
 class EAFixture: public ::testing::Test
 {
@@ -10,22 +9,22 @@ public:
 
 EAFixture()
 {
-   int from_edges[2][2] = 
+   double from_edges[2][2] = 
    {
       {0, 1},
       {1, 0}
    };
-   int from_weights[2] = {1, 1};
-   int *from_matrix[2];
+   double from_weights[2] = {1, 1};
+   double *from_matrix[2];
    for (int i = 0; i < 2; i++)
    {
       from_matrix[i] = from_edges[i];
    }
  
-   from_network = new Network((int**)from_matrix, from_weights, 2);
+   from_network = new Network((double**)from_matrix, from_weights, 2);
 
 
-   int to_edges[5][5] =
+   double to_edges[5][5] =
    { 
      {0, 2, 0, 0, 0},
      {2, 0, 2, 0, 0},
@@ -34,14 +33,14 @@ EAFixture()
      {0, 0, 0, 2, 0}
    };
 
-   int to_weights[5] = {2, 2, 2, 2, 2};
-   int *to_matrix[5];
+   double to_weights[5] = {2, 2, 2, 2, 2};
+   double *to_matrix[5];
    for (int i = 0; i < 5; i++)
    {
       to_matrix[i] = to_edges[i];
    }
  
-   to_network = new Network((int**)to_matrix, to_weights, 5);
+   to_network = new Network((double**)to_matrix, to_weights, 5);
  
 }
 

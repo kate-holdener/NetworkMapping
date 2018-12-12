@@ -1,7 +1,6 @@
-#define private public
+#include <gtest/gtest.h>
 #include "Network.h"
 #include "NetworkMapping.h"
-#include <gtest/gtest.h>
 
 TEST(LineNetwork, ValidNodes)
 {

@@ -1,7 +1,10 @@
-#define private public
-
-#include "Network.h"
 #include <gtest/gtest.h>
+#include <string>
+#define private public
+#include "Network.h"
+using namespace std;
+
+char *input_dir = NULL;
 
 TEST(LineNetwork, PathExists)
 {
@@ -252,7 +255,9 @@ TEST(LineNetwork, PathExistsZeroWeight)
 
 TEST(ConstructorFromFile, InitSize)
 {
-   FILE *input_file = fopen("test_network1.txt", "r");
+   string input_file_name = input_dir;
+   input_file_name.append("/test_network1.txt");
+   FILE *input_file = fopen(input_file_name.c_str(), "r");
    Network network(input_file);
    fclose(input_file);
    ASSERT_EQ(5, network.m_size);
@@ -260,7 +265,9 @@ TEST(ConstructorFromFile, InitSize)
 
 TEST(ConstructorFromFile, AdjacencyMatrix)
 {
-   FILE *input_file = fopen("test_network1.txt", "r");
+   string input_file_name = input_dir;
+   input_file_name.append("/test_network1.txt");
+   FILE *input_file = fopen(input_file_name.c_str(), "r");
    Network network(input_file);
    fclose(input_file);
    //verify that the weights are correct
@@ -298,7 +305,9 @@ TEST(ConstructorFromFile, AdjacencyMatrix)
 
 TEST(ConstructorFromFile, NodeWeights)
 {
-   FILE *input_file = fopen("test_network1.txt", "r");
+   string input_file_name = input_dir;
+   input_file_name.append("/test_network1.txt");
+   FILE *input_file = fopen(input_file_name.c_str(), "r");
    Network network(input_file);
    fclose(input_file);
    ASSERT_EQ(0, network.m_node_weights[0]);
@@ -310,6 +319,11 @@ TEST(ConstructorFromFile, NodeWeights)
 
 int main(int argc, char **argv)
 {
+   if(argc < 2)
+   {
+      fprintf(stderr, "USAGE: ./<TestName> <input_dir>\n");
+   }
+   input_dir = argv[1];   
    testing::InitGoogleTest(&argc, argv);
    return RUN_ALL_TESTS();
 }
