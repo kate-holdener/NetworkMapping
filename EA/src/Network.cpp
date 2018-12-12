@@ -131,6 +131,7 @@ Network& Network::operator=(Network *network)
    };
    
    memcpy(m_node_weights, network->m_node_weights, sizeof(double) * m_size);
+   return *this;
 }
 
 Network::Network(double **matrix, double *weights, int size):

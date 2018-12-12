@@ -46,7 +46,7 @@ void EAParameters::read_from_file(const char *file_name)
    std::string param_name;
    std::string param_value;
 
-   int  pos = std::string::npos;
+   size_t  pos = std::string::npos;
 
    void* handle = dlopen(NULL, RTLD_LAZY|RTLD_GLOBAL);
    if (handle == NULL)
