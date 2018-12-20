@@ -18,6 +18,9 @@ extern "C"
  */
 void nodes_and_links_ratio(Individual **individuals, int num_individuals);
 
+void nodes_ratio(Individual **individuals, int num_individuals);
+
+void links_ratio(Individual **individuals, int num_individuals);
 }
 
 #endif

@@ -92,7 +92,7 @@ void EAParameters::read_from_file(const char *file_name)
             evaluate = (evaluate_f)dlsym(handle, param_value.c_str());
             if (initialize == NULL)
             {
-               fprintf(stderr, "ERROR: EAParameters:read_from_file() failed on dlsym(%s)\n", param_value.c_str());
+               fprintf(stderr, "ERROR: EAParameters:read_from_file() failed on dlsym(%s): %s\n", param_value.c_str(), dlerror());
             }
          }
          else if (param_name == c_mutation)

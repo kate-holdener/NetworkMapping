@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <algorithm>
 
-inline bool link_greater(Link &l1, Link &l2)
+inline bool link_greater(const Link &l1, const Link &l2)
 {
    return (l1.weight > l2.weight) ? true: false;
 }
