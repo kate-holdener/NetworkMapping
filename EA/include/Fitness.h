@@ -21,6 +21,13 @@ void nodes_and_links_ratio(Individual **individuals, int num_individuals);
 void nodes_ratio(Individual **individuals, int num_individuals);
 
 void links_ratio(Individual **individuals, int num_individuals);
+
+void node_balance_sum(Individual **individuals, int num_individuals);
+
+void node_balance_product(Individual **individuals, int num_individuals);
+
+void feasible_node_balance_sum(Individual **individuals, int num_individuals);
+
 }
 
 #endif

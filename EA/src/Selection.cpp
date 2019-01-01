@@ -53,4 +53,23 @@ void rank(Population *population)
    }
    select_by_score(population);
 }
+
+void tournament3(Population *population)
+{
+   for (int i = 0; i < population->m_num_selected_parents; i++)
+   {
+      // select 3 individuals at random
+      // best one out of 3 is selected as a parent
+      Individual *winner = NULL;
+      for (int k = 0; k < 3; k++)
+      {
+         int next = rand() % population->m_num_parents;
+         if (winner == NULL || population->m_parents[next]->m_fitness > winner->m_fitness)
+         {
+            winner = population->m_parents[next];
+         }
+      }
+      population->m_selected_parents[i] = winner;
+   }   
+}
 }

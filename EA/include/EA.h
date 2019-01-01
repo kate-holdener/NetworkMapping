@@ -80,7 +80,7 @@ private:
          return false;
       }
 */
-      if (get_best_fitness() < 2)
+      if (get_best_fitness() < 1)
       {
          return false;
       }

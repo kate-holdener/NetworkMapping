@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "GraphGenerator.h"
 
 void GraphGenerator::create(FILE  *out_file)
@@ -121,7 +122,12 @@ void GraphGenerator::print_graph(double **adjacency_matrix, double *nodes, FILE 
 {
    for (int i = 0; i < num_nodes; i++)
    {
-      for (int j = 0; j < num_nodes; j++)
+      int j = 0;
+      if (!directed)
+      {
+         j = i+1;
+      }
+      for (j; j < num_nodes; j++)
       { 
          if (adjacency_matrix[i][j] != 0)
          {
@@ -183,6 +189,9 @@ int main(int argc, char **argv)
       }
       next_arg++;
    }
+   // initialize random number generator
+   srand(time(NULL));
+
    g.set_num_nodes(num_nodes);
    g.set_directed(directed);
    g.set_density(density);

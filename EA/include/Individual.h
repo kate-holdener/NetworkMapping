@@ -18,6 +18,7 @@ public:
     */
    Individual(Network *from, Network *to):
       m_solution(from, to),
+      m_feasible(0),
       m_fitness(0),
       m_score(0)
    {}
@@ -31,6 +32,7 @@ public:
 
    NetworkMapping m_solution;
 
+   bool           m_feasible;
    double         m_fitness;
    double         m_score; // used in selection
 };

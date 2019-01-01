@@ -5,6 +5,14 @@
 #include "Competition.h"
 #include <algorithm>
 
+
+void swap(Individual **parent, Individual **offspring)
+{
+   Individual *temp = *parent;
+   *parent = *offspring;
+   *offspring = temp;
+}
+
 extern "C"
 {
 
@@ -48,18 +56,26 @@ void replace(Population *population)
       {
          break;
       }
-      population->m_parents[i] = population->m_offspring[i];
+      swap(population->m_parents+i, population->m_offspring+i);
    }
 }
 
 void replace_half(Population *population)
 {
    population->sort();
+   double best_fitness_before = population->get_best_solution()->m_fitness;
    int j = 0;
    for (int i = population->m_num_parents/2; i < population->m_num_parents; i++)
    {
-      population->m_parents[i] = population->m_offspring[j];
+      swap(population->m_parents+i, population->m_offspring+j);
+      //population->m_parents[i] = population->m_offspring[j];
       j++;
    }
+   double best_fitness_after = population->get_best_solution()->m_fitness;
+   if (best_fitness_before > best_fitness_after)
+   {
+      printf("Fitness declined!");
+   }
+
 }
 }

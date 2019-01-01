@@ -8,5 +8,6 @@ void roulette_wheel(Population *population);
 
 void rank(Population *population);
 
+void tournament3(Population *population);
 }
 #endif
