@@ -310,3 +310,23 @@ void Network::reduce_capacity(int node1, int node2, int *node_ancestor, double w
    }
 }
 
+void Network::print(FILE *f)
+{
+   // print links
+   for(int i = 0; i < m_size; i++)
+   {
+      for(int j = i; j < m_size; j++)
+      {
+         if (m_link_weights[i][j] != 0)
+         {
+            fprintf(f, "%d %d %f\n", i, j, m_link_weights[i][j]);
+         }
+      }
+   }
+   // print node weights
+   fprintf(f, "\n");
+   for (int i = 0; i < m_size; i++)
+   {
+      fprintf(f, "%f\n", m_node_weights[i]);
+   }
+}

@@ -39,6 +39,7 @@ public:
 
    bool embed_path(int node1, int node2, double weight);
 
+   void print(FILE *f);
 private:
    /*
     * Provided that a path (satisfying weight constraint) from node1 to node 2
